@@ -32,9 +32,15 @@ function [out] = SQUnravel(FileName, PathName)
 
     %Converts export array to wave and spits it out
     OutFileName = OutFileName(1:strfind(OutFileName,'.') - 1);
-    OutFileName = [OutFileName char('.wav')]; 
-    audiowrite(OutFileName,out,Fs);
-
+    OutFileName = [OutFileName char('.wav')];
+    
+    if Fs > 49000 %cuts the sample rate to 44.1k or 48k as appropriate, this came from a record it doesn't need to be that high
+        out = resample(out, 1, 2);
+        audiowrite(OutFileName,out,Fs/2, 'BitsPerSample', 16);
+        
+    else 
+        audiowrite(OutFileName,out,Fs, 'BitsPerSample', 16);
+        
     %runs diagnostics
     diagnostic = out >= 1;
     diagnostic = diagnostic + out < -1;
