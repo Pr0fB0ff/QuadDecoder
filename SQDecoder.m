@@ -1,5 +1,4 @@
 %Housekeeping
-warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
 clear all;
 close all;
 clc;

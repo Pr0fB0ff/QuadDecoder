@@ -1,6 +1,6 @@
 function [out] = SQUnravel(FileName, PathName)
-    
     %Housekeeping
+    warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
     firstPath = char(pwd);    
     cd (PathName);
     
@@ -32,16 +32,21 @@ function [out] = SQUnravel(FileName, PathName)
 
     %Converts export array to wave and spits it out
     OutFileName = OutFileName(1:strfind(OutFileName,'.') - 1);
-    OutFileName = [OutFileName char('Quad.wav')]; 
+    OutFileName = [OutFileName char('.wav')]; 
     audiowrite(OutFileName,out,Fs);
 
     %runs diagnostics
     diagnostic = out >= 1;
     diagnostic = diagnostic + out < -1;
     clip = sum(sum(diagnostic));
-    fprintf('%d clipped samples out of %d total\n\n', clip, length(out) * 4);
+    if clip > 0
+        fprintf('%d clipped samples out of %d total\n', clip, length(out) * 4);
+    end
 
+    fprintf('\n');
+    
     %Housekeeping
     cd(firstPath);
+    warning('on', 'MATLAB:audiovideo:audiowrite:dataClipped');
 end
 
