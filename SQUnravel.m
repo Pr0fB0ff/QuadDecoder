@@ -1,13 +1,5 @@
-function [out] = SQUnravel(FileName, PathName)
-    %Housekeeping
-    warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
-    firstPath = char(pwd);    
-    cd (PathName);
-    
-    %Pulls in file and splits channels
-    OutFileName = char(FileName);
-    fprintf('loading file %s\n', FileName);
-    [soundIn,Fs] = audioread(OutFileName);
+function [out] = SQUnravel(soundIn)
+    %split channels
     left = soundIn(:,1);
     right = soundIn(:,2);
 
@@ -24,35 +16,10 @@ function [out] = SQUnravel(FileName, PathName)
 
     %Builds export array in 5.1 convention
     %3 and 4 are where center and LFE would be, not used here
-    disp('assembling export wav');
+    disp('assembling export matrix');
     out(:,1) = left;
     out(:,2) = right;
     out(:,5) = leftRear;
     out(:,6) = rightRear;
-
-    %Converts export array to wave and spits it out
-    OutFileName = OutFileName(1:strfind(OutFileName,'.') - 1);
-    OutFileName = [OutFileName char('.wav')];
-    
-    if Fs > 49000 %cuts the sample rate to 44.1k or 48k as appropriate, this came from a record it doesn't need to be that high
-        out = resample(out, 1, 2);
-        audiowrite(OutFileName,out,Fs/2, 'BitsPerSample', 16);
-        
-    else 
-        audiowrite(OutFileName,out,Fs, 'BitsPerSample', 16);
-        
-    %runs diagnostics
-    diagnostic = out >= 1;
-    diagnostic = diagnostic + out < -1;
-    clip = sum(sum(diagnostic));
-    if clip > 0
-        fprintf('%d clipped samples out of %d total\n', clip, length(out) * 4);
-    end
-
-    fprintf('\n');
-    
-    %Housekeeping
-    cd(firstPath);
-    warning('on', 'MATLAB:audiovideo:audiowrite:dataClipped');
 end
 
