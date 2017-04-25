@@ -1,39 +1,24 @@
+%Housekeeping
+warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
 clear all;
 close all;
 clc;
 
-[FileName,PathName] = uigetfile('*.*');
+%Launches window to choose files to convert
+allowedFiles = {'*.wav'; '*.aiff'; '*.aif'; '*.wave'};
+[FileName,PathName] = uigetfile(allowedFiles, 'MultiSelect', 'on');
 
-cd (PathName)
+if length(FileName) == 1 && length(PathName) == 1 %case for clicking cancel
+    fprintf('How''s about you choose somethin'' hun\n');
+    return
+    
+elseif iscell(FileName) %case for multiple files
+    for i = 1:length(FileName)
+        SQUnravel(char(FileName(i)), PathName);
+    end
+    
+elseif isvector(FileName) %case for single files
+    SQUnravel(FileName, PathName);
+end
 
-disp('loading file');
-[soundIn,Fs] = audioread(FileName);
-left = soundIn(:,1);
-right = soundIn(:,2);
-
-disp('performing transform');
-xi = imag(hilbert(soundIn));
-iLeft = xi(:,1);
-iRight = xi(:,2);
-
-disp('decoding rear channels');
-leftRear = -0.7 * iLeft -0.7 * right;
-rightRear = 0.7 * left + 0.7 * iRight;
-
-disp('assembling export wav');
-out(:,1) = left;
-out(:,2) = right;
-out(:,5) = leftRear;
-out(:,6) = rightRear;
-
-
-FileName = FileName(1:strfind(FileName,'.') - 1);
-FileName = [FileName char('Quad.wav')]; 
-audiowrite(FileName,out,Fs);
-
-outRear(:,1) = leftRear;
-outRear(:,2) = rightRear;
-
-FileName = FileName(1:strfind(FileName,'.') - 1);
-FileName = [FileName char('QuadRears.wav')]; 
-audiowrite(FileName,out,Fs);
+fprintf('All done\n');
