@@ -3,6 +3,8 @@ clear all;
 close all;
 clc;
 
+scheme = 'QS'
+
 %Launches window to choose files to convert
 allowedFiles = {'*.wav'; '*.aiff'; '*.aif'; '*.wave'};
 [FileName,PathName] = uigetfile(allowedFiles, 'MultiSelect', 'on');
@@ -22,7 +24,7 @@ elseif iscell(FileName) %case for multiple files
         [soundIn,Fs] = audioread(OutFileName);
 
         cd(firstPath);
-        out = QuadUnravel(soundIn, 'QS');
+        out = QuadUnravel(soundIn, scheme);
         clipDiagnose(out);
         exporter(out, Fs, OutFileName, PathName);
         fprintf('\n');
@@ -37,7 +39,7 @@ elseif isvector(FileName) %case for single files
     [soundIn,Fs] = audioread(OutFileName);
     
     cd(firstPath);
-    out = QuadUnravel(soundIn, 'QS');
+    out = QuadUnravel(soundIn, scheme);
     clipDiagnose(out);
     exporter(out, Fs, OutFileName, PathName);
 end
