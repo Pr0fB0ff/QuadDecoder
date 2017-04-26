@@ -22,9 +22,10 @@ elseif iscell(FileName) %case for multiple files
         [soundIn,Fs] = audioread(OutFileName);
 
         cd(firstPath);
-        out = SQUnravel(soundIn);
+        out = QuadUnravel(soundIn, 'QS');
+        clipDiagnose(out);
         exporter(out, Fs, OutFileName, PathName);
-        fprintf('\n\n');
+        fprintf('\n');
     end
     
 elseif isvector(FileName) %case for single files
@@ -36,17 +37,9 @@ elseif isvector(FileName) %case for single files
     [soundIn,Fs] = audioread(OutFileName);
     
     cd(firstPath);
-    out = SQUnravel(soundIn);
-    
+    out = QuadUnravel(soundIn, 'QS');
+    clipDiagnose(out);
     exporter(out, Fs, OutFileName, PathName);
-end
-
-%runs diagnostics
-diagnostic = out >= 1;
-diagnostic = diagnostic + out < -1;
-clip = sum(sum(diagnostic));
-if clip > 0
-    fprintf('%d clipped samples out of %d total\n', clip, length(out) * 4);
 end
     
 cd(firstPath);
