@@ -42,9 +42,13 @@ function [out] = QuadUnravel(soundIn, encodingType)
             rightRear = -0.8 * leftIn + rightIn;
             left = leftIn + 0.2 * rightIn;
             right = 0.2 * leftIn + rightIn;
-
+            
+%         case 'CD-4'
+%             %Cobbles rears and fronts together to CD-4, or Compatiable Discrete-4, spec
+%             leftDifference = fmdemod(leftIn, 30000, Fs)
+            
         otherwise
-            fprintf('Valid encoding type not entered.\nValid options are ''SQ'' ''QS'' ''DY'' ''EV''');
+            fprintf('Valid encoding type not entered.\nValid options are ''SQ'' ''QS'' ''DY'' ''EV''\nRemember quotes');
     end
 
     %Builds export array in 5.1 convention

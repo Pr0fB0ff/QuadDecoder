@@ -3,7 +3,9 @@ clear all;
 close all;
 clc;
 
-scheme = 'QS'
+prompt = 'Input decoding scheme\nCurrently supported... ''SQ'', ''QS'', ''DQ'' (Dynaquad), ''EV'' (ElectroVoice)\n';
+scheme = input(prompt);
+fprintf('Decoding in %s\n', scheme);
 
 %Launches window to choose files to convert
 allowedFiles = {'*.wav'; '*.aiff'; '*.aif'; '*.wave'};

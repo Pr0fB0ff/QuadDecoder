@@ -8,15 +8,8 @@ function [] = exporter(out, Fs, OutFileName, PathName)
     OutFileName = [OutFileName char('.wav')];
 
     cd (PathName);
-    if Fs > 49000 %cuts the sample rate to 44.1k or 48k as appropriate, this came from a record it doesn't need to be that high
-        out = resample(out, 1, 2);
-        audiowrite(OutFileName,out,Fs/2, 'BitsPerSample', 16);
-
-    else 
-        audiowrite(OutFileName,out,Fs, 'BitsPerSample', 16);
-        
-    end
-        
+    audiowrite(OutFileName,out,Fs, 'BitsPerSample', 16);
+    
     %Housekeeping
     warning('on', 'MATLAB:audiovideo:audiowrite:dataClipped');
 end
