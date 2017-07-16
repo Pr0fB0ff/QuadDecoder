@@ -1,4 +1,8 @@
 function [] = exporter(out, Fs, OutFileName, PathName)
+    %Normalize Audio
+    out = mapminmax(rot90(out));
+    out = rot90(out, 3);
+
     %Housekeeping
     warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
     
