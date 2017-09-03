@@ -3,7 +3,7 @@ clear all;
 close all;
 clc;
 
-prompt = 'Input decoding scheme\nCurrently supported... ''SQ'', ''QS'', ''DQ'' (Dynaquad), ''EV'' (ElectroVoice)\n';
+prompt = 'Input decoding scheme\nCurrently supported... ''SQ'', ''QS'', ''DQ'' (Dynaquad), ''EV'' (ElectroVoice), ''EVD'' (Electrovoice Decoder Matrix)\n';
 scheme = input(prompt);
 fprintf('Decoding in %s\n', scheme);
 

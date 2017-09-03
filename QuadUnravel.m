@@ -38,6 +38,15 @@ function [out] = QuadUnravel(soundIn, encodingType)
 
         case 'EV'
             %Cobbles rears and fronts together to EV, or Stereo-4, spec
+            %using superior encoder matrix
+            leftRear = leftIn - 0.5 * rightIn;
+            rightRear = -0.5 * leftIn + rightIn;
+            left = leftIn + 0.3 * rightIn;
+            right = 0.3 * leftIn + rightIn;
+            
+        case 'EVD'
+            %Cobbles rears and fronts together to EV, or Stereo-4, spec
+            %using original decoder matric
             leftRear = leftIn - 0.8 * rightIn;
             rightRear = -0.8 * leftIn + rightIn;
             left = leftIn + 0.2 * rightIn;
