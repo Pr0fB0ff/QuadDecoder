@@ -9,5 +9,7 @@ There are four files of interest...
   3) clipDiagnose.m - occasionally there will be slight clipping, this will let you know if there is any and tell you if it's signifigant. The most I've ever seen is three clipped samples per song.
   
   4) exporter.m - faccilitates a clean export to a wav.
+
+  5) dcblock.m - creates a good DC offset filter. Written by J M De Freitas.
   
   Hit me up if you got any questions

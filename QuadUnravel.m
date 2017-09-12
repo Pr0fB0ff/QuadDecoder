@@ -1,4 +1,4 @@
-function [out] = QuadUnravel(soundIn, encodingType)
+function [out] = QuadUnravel(soundIn, encodingType, Fs)
     %split channels
     leftIn = soundIn(:,1);
     rightIn = soundIn(:,2);
@@ -44,9 +44,10 @@ function [out] = QuadUnravel(soundIn, encodingType)
             left = leftIn + 0.3 * rightIn;
             right = 0.3 * leftIn + rightIn;
             
+            
         case 'EVD'
             %Cobbles rears and fronts together to EV, or Stereo-4, spec
-            %using original decoder matric
+            %using original decoder matrix
             leftRear = leftIn - 0.8 * rightIn;
             rightRear = -0.8 * leftIn + rightIn;
             left = leftIn + 0.2 * rightIn;
@@ -67,5 +68,11 @@ function [out] = QuadUnravel(soundIn, encodingType)
     out(:,2) = right;
     out(:,5) = leftRear;
     out(:,6) = rightRear;
+    
+    %removes DC offset, often found in EV and EVD
+    coeff = dcblock(5, Fs);
+    b = [1 -1];
+    a = [1 coeff];
+    out = filter(b, a, out);
 end
 

@@ -26,7 +26,7 @@ elseif iscell(FileName) %case for multiple files
         [soundIn,Fs] = audioread(OutFileName);
 
         cd(firstPath);
-        out = QuadUnravel(soundIn, scheme);
+        out = QuadUnravel(soundIn, scheme, Fs);
         clipDiagnose(out);
         exporter(out, Fs, OutFileName, PathName);
         fprintf('\n');
@@ -41,7 +41,7 @@ elseif isvector(FileName) %case for single files
     [soundIn,Fs] = audioread(OutFileName);
     
     cd(firstPath);
-    out = QuadUnravel(soundIn, scheme);
+    out = QuadUnravel(soundIn, scheme, Fs);
     clipDiagnose(out);
     exporter(out, Fs, OutFileName, PathName);
 end
