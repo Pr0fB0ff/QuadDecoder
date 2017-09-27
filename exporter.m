@@ -4,7 +4,7 @@ function [] = exporter(out, Fs, OutFileName, PathName)
     out = rot90(out, 3);
 
     %Housekeeping
-    warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %silly clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
+    warning('off', 'MATLAB:audiovideo:audiowrite:dataClipped'); %anal clipping warning, I replaced it with a diagnostic, seems to not clip often enough to warrant a solution
     
     %Converts export array to wave and spits it out
     ExtentionLoc = strfind(OutFileName,'.');
